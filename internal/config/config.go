@@ -1,18 +1,26 @@
 package config
 
-import "os"
+import (
+	"os"
+
+	"github.com/joho/godotenv"
+)
 
 type Config struct {
-	Port string
+	DatabaseURL string
+	Port        string
 }
 
-func Load() *Config {
+func Load() Config {
+	godotenv.Load()
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
-	return &Config{
-		Port: port,
+	return Config{
+		DatabaseURL: os.Getenv("DATABASE_URL"),
+		Port:        port,
 	}
 }

@@ -1,0 +1,27 @@
+package handler
+
+import (
+	"encoding/json"
+	"net/http"
+
+	"github.com/DenariusData/API-5SEM-BACKEND/internal/usecase"
+)
+
+type ProjetoHandler struct {
+	useCase *usecase.ProjetoUseCase
+}
+
+func NewProjetoHandler(uc *usecase.ProjetoUseCase) *ProjetoHandler {
+	return &ProjetoHandler{useCase: uc}
+}
+
+func (h *ProjetoHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+	projects, err := h.useCase.GetAll()
+	if err != nil {
+		http.Error(w, `{"error":"failed to fetch projects"}`, http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(projects)
+}
