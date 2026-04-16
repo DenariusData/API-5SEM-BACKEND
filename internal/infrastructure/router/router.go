@@ -42,6 +42,10 @@ func NewRouter(h Handlers) *chi.Mux {
 			r.Get("/estoque-materiais", h.FatoEstoque.GetAll)
 			r.Get("/execucao-tarefas", h.FatoExecucao.GetAll)
 		})
+
+		r.Route("/programa", func(r chi.Router) {
+			r.Get("/investimento", h.Projeto.GetInvestimentoByPrograma)
+		})
 	})
 
 	return r
