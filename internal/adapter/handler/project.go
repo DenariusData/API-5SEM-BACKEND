@@ -25,3 +25,14 @@ func (h *ProjetoHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(projects)
 }
+
+func (h *ProjetoHandler) GetInvestimentoByPrograma(w http.ResponseWriter, r *http.Request) {
+	investimentos, err := h.useCase.GetInvestimentoByPrograma()
+	if err != nil {
+		http.Error(w, `{"error":"failed to fetch investment by program"}`, http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(investimentos)
+}
