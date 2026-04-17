@@ -1,4 +1,4 @@
-# Unit Testing Guide — Backend (Go)
+# Unit Testing Guide — Backend
 
 ## Overview
 
