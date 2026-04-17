@@ -57,17 +57,17 @@ func (r *PostgresProjetoRepository) FindAll() ([]entity.DimProjeto, error) {
 	return results, rows.Err()
 }
 
-func (r *PostgresProjetoReposutory) FindInvestimentoByPrograma() ([]entity.ProgramaInvestimento, error) {
+func (r *PostgresProjetoRepository) FindInvestimentoByPrograma() ([]entity.ProgramaInvestimento, error) {
 	query := `
 		SELECT
 			pr.codigo_programa,
 			pr.nome_programa,
-			COALESCE(SUM(cp.valor_alocado), 0)::text AS investimento_total
+			COALESCE(SUM(cp.valor_alocado), 0) AS investimento_total
 		FROM programa pr
-		LEFT JOIN projeto p ON pr.id_programa = p.id_programa
-		LEFT JOIN compra_projeto cp ON cp.id_projeto = p.id_projeto
-		GROUP BY pr.id_programa, pr.codigo_programa, pr.nome_programa
-		OERDER BY pr.nome_programa`
+		LEFT JOIN projeto p ON p.id_programa = pr.id_programa
+		LEFT JOIN compra_projeto cp ON p.id_projeto = cp.id_projeto
+		GROUP BY pr.codigo_programa, pr.nome_programa
+		ORDER BY pr.nome_programa`
 	
 	rows, err := r.db.Query(context.Background(), query)
 	if err != nil {
@@ -78,7 +78,7 @@ func (r *PostgresProjetoReposutory) FindInvestimentoByPrograma() ([]entity.Progr
 	var results []entity.ProgramaInvestimento
 	for rows.Next() {
 		var item entity.ProgramaInvestimento
-		err := rows.Sacn(
+		err := rows.Scan(
 			&item.CodigoPrograma,
 			&item.NomePrograma,
 			&item.InvestimentoTotal,
