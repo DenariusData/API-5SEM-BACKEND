@@ -56,3 +56,38 @@ func (r *PostgresProjetoRepository) FindAll() ([]entity.DimProjeto, error) {
 
 	return results, rows.Err()
 }
+
+func (r *PostgresProjetoRepository) FindInvestimentoByPrograma() ([]entity.ProgramaInvestimento, error) {
+	query := `
+		SELECT
+			pr.codigo_programa,
+			pr.nome_programa,
+			COALESCE(SUM(cp.valor_alocado), 0) AS investimento_total
+		FROM programa pr
+		LEFT JOIN projeto p ON p.id_programa = pr.id_programa
+		LEFT JOIN compra_projeto cp ON p.id_projeto = cp.id_projeto
+		GROUP BY pr.codigo_programa, pr.nome_programa
+		ORDER BY pr.nome_programa`
+	
+	rows, err := r.db.Query(context.Background(), query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var results []entity.ProgramaInvestimento
+	for rows.Next() {
+		var item entity.ProgramaInvestimento
+		err := rows.Scan(
+			&item.CodigoPrograma,
+			&item.NomePrograma,
+			&item.InvestimentoTotal,
+		)
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, item)
+	}
+
+	return results, rows.Err()
+}
