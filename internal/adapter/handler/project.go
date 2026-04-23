@@ -7,6 +7,11 @@ import (
 	"github.com/DenariusData/API-5SEM-BACKEND/internal/usecase"
 )
 
+const (
+	ContentTypeHeader = "Content-Type"
+	ContentTypeJSON   = "application/json"
+)
+
 type ProjetoHandler struct {
 	useCase *usecase.ProjetoUseCase
 }
@@ -22,7 +27,7 @@ func (h *ProjetoHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(ContentTypeHeader, ContentTypeJSON)
 	json.NewEncoder(w).Encode(projects)
 }
 
@@ -33,7 +38,7 @@ func (h *ProjetoHandler) GetInvestimentoByPrograma(w http.ResponseWriter, r *htt
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(ContentTypeHeader, ContentTypeJSON)
 	json.NewEncoder(w).Encode(investimentos)
 }
 
@@ -44,6 +49,6 @@ func (h *ProjetoHandler) GetMateriaisByProjeto(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(ContentTypeHeader, ContentTypeJSON)
 	json.NewEncoder(w).Encode(materiais)
 }
