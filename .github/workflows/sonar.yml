@@ -34,7 +34,6 @@ jobs:
 
       - name: Rodar Testes e Gerar Cobertura
         run: |
-          cd API-5SEM-BACKEND
           go test -v -coverprofile=coverage.out ./...
 
       - name: SonarCloud Scan
@@ -45,8 +44,7 @@ jobs:
           args: >
             -Dsonar.projectKey=DenariusData_API-5SEM-BACKEND
             -Dsonar.organization=denarius
-            -Dsonar.go.coverage.reportPaths=API-5SEM-BACKEND/coverage.out
-            -Dsonar.projectBaseDir=API-5SEM-BACKEND
+            -Dsonar.go.coverage.reportPaths=coverage.out
             -Dsonar.sources=.
             -Dsonar.tests=.
             -Dsonar.test.inclusions=**/*_test.go
