@@ -5,6 +5,7 @@ import "github.com/DenariusData/API-5SEM-BACKEND/internal/domain/entity"
 type ProjetoRepository interface {
 	FindAll() ([]entity.DimProjeto, error)
 	FindInvestimentoByPrograma() ([]entity.ProgramaInvestimento, error)
+	FindMateriaisByProjeto() ([]entity.ProjetoMaterial, error)
 }
 
 type ProjetoUseCase struct {
@@ -21,4 +22,8 @@ func (uc *ProjetoUseCase) GetAll() ([]entity.DimProjeto, error) {
 
 func (uc *ProjetoUseCase) GetInvestimentoByPrograma() ([]entity.ProgramaInvestimento, error) {
 	return uc.repo.FindInvestimentoByPrograma()
+}
+
+func (uc *ProjetoUseCase) GetMateriaisByProjeto() ([]entity.ProjetoMaterial, error) {
+	return uc.repo.FindMateriaisByProjeto()
 }
