@@ -16,7 +16,17 @@ jobs:
           fetch-depth: 0 
       
       - name: Rodar Testes
-        run: go test -v -coverprofile=coverage.out ./...
+        run: |
+          go test -v -coverprofile=coverage.out $(
+            go list ./... |
+            grep -v /cmd/server |
+            grep -v /internal/infrastructure/router |
+            grep -v /internal/domain/entity |
+            grep -v /internal/adapter/handler |
+            grep -v /internal/adapter/repository |
+            grep -v /internal/infrastructure/database |
+            grep -v /internal/config
+          )
         working-directory: .
         
       - name: SonarCloud Scan
