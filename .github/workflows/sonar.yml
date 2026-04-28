@@ -20,7 +20,7 @@ jobs:
         working-directory: ./API-5SEM-BACKEND
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@d31671954378f102551532882f23b2c60824c3d8
+        uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
