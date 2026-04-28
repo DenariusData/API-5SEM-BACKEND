@@ -1,0 +1,31 @@
+name: Build e Analise SonarCloud
+
+on:
+  push:
+    branches: [main, sprint2, sprint3]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud:
+    name: SonarCloud Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+      
+      - name: Rodar Testes
+        run: go test -v -coverprofile=coverage.out ./...
+        working-directory: ./API-5SEM-BACKEND
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@d31671954378f102551532882f23b2c60824c3d8
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: ./API-5SEM-BACKEND
+          args: >
+            -Dsonar.projectKey=DenariusData_API-5SEM-BACKEND
+            -Dsonar.organization=denariusdata
+            -Dsonar.go.coverage.reportPaths=coverage.out
