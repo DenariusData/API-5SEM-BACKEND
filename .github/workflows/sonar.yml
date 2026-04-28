@@ -17,7 +17,6 @@ jobs:
       
       - name: Rodar Testes
         run: go test -v -coverprofile=coverage.out ./...
-        working-directory: ./API-5SEM-BACKEND
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v3.1
