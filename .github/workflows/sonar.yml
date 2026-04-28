@@ -17,13 +17,13 @@ jobs:
       
       - name: Rodar Testes
         run: go test -v -coverprofile=coverage.out ./...
-
+        working-directory: .
+        
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v3.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          projectBaseDir: ./API-5SEM-BACKEND
           args: >
             -Dsonar.projectKey=DenariusData_API-5SEM-BACKEND
             -Dsonar.organization=denariusdata
