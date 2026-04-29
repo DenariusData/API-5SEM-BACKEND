@@ -35,6 +35,7 @@ func NewRouter(h Handlers) *chi.Mux {
 			r.Get("/solicitacoes", h.Solicitacao.GetAll)
 			r.Get("/tarefas", h.Tarefa.GetAll)
 			r.Get("/tempo", h.Tempo.GetAll)
+			r.Get("/tempo-gasto", h.Tempo.GetTempoGasto)
 		})
 
 		r.Route("/fato", func(r chi.Router) {
