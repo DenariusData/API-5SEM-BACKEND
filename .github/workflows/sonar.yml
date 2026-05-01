@@ -18,11 +18,11 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21'
+          go-version: '1.22'
 
       - name: Rodar Testes e Gerar Cobertura
         run: |
-          go test -v -coverprofile=./coverage.out ./...
+          go test -v -coverprofile=coverage.out ./internal/usecase/...
       
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v3.1
