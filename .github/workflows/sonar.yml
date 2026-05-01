@@ -33,6 +33,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v3.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: >
             -Dsonar.projectKey=DenariusData_API-5SEM-BACKEND
