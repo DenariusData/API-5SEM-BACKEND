@@ -36,3 +36,14 @@ func (h *ProjetoHandler) GetInvestimentoByPrograma(w http.ResponseWriter, r *htt
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(investimentos)
 }
+
+func (h *ProjetoHandler) GetMateriaisByProjeto(w http.ResponseWriter, r *http.Request) {
+	materiais, err := h.useCase.GetMateriaisByProjeto()
+	if err != nil {
+		http.Error(w, `{"error":"failed to fetch materials by project"}`, http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(materiais)
+}

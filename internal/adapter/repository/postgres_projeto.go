@@ -91,3 +91,43 @@ func (r *PostgresProjetoRepository) FindInvestimentoByPrograma() ([]entity.Progr
 
 	return results, rows.Err()
 }
+
+func (r *PostgresProjetoRepository) FindMateriaisByProjeto() ([]entity.ProjetoMaterial, error) {
+	query := `
+		SELECT
+			p.codigo_projeto,
+			p.nome_projeto,
+			m.codigo_material,
+			m.descricao as descricao_material,
+			COALESCE(SUM(ep.quantidade), 0) as quantidade_estoque
+		FROM projeto p
+		INNER JOIN estoque_projeto ep ON p.id_projeto = ep.id_projeto
+		INNER JOIN material m ON ep.id_material = m.id_material
+		GROUP BY p.codigo_projeto, p.nome_projeto, m.codigo_material, m.descricao
+		ORDER BY p.nome_projeto, m.descricao;
+	`
+
+	rows, err := r.db.Query(context.Background(), query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var results []entity.ProjetoMaterial
+	for rows.Next() {
+		var item entity.ProjetoMaterial
+		err := rows.Scan(
+			&item.CodigoProjeto,
+			&item.NomeProjeto,
+			&item.CodigoMaterial,
+			&item.DescricaoMaterial,
+			&item.QuantidadeEstoque,
+		)
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, item)
+	}
+
+	return results, rows.Err()
+}

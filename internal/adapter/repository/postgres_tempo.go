@@ -53,3 +53,23 @@ func (r *PostgresTempoRepository) FindAll() ([]entity.DimTempo, error) {
 
 	return results, rows.Err()
 }
+
+func (r *PostgresTempoRepository) GetTempoGasto() (interface{}, error) {
+	query := `
+		SELECT COALESCE(SUM(horas_trabalhadas), 0)
+		FROM tempo_tarefa
+	`
+
+	var total float64
+
+	err := r.db.QueryRow(context.Background(), query).Scan(&total)
+	if err != nil {
+		return nil, err
+	}
+
+	result := map[string]interface{}{
+		"total_tempo_gasto": total,
+	}
+
+	return result, nil
+}

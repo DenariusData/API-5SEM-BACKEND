@@ -25,3 +25,14 @@ func (h *TempoHandler) GetAll(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(data)
 }
+
+func (h *TempoHandler) GetTempoGasto(w http.ResponseWriter, r *http.Request) {
+	data, err := h.useCase.GetTempoGasto()
+	if err != nil {
+		http.Error(w, `{"error":"failed to fetch tempo gasto"}`, http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(data)
+}
